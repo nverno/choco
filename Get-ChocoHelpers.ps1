@@ -7,7 +7,7 @@
 $parent = (Split-Path -Parent $MyInvocation.MyCommand.Definition)
 Write-Host $parent
 
-function Get-ChocoHelpers ($outfile=$null) {
+function Get-ChocoHelpers ($outfile) {
     $parent = (Split-Path -Parent $MyInvocation.MyCommand.Definition)
     
         if ($outfile -eq $null) {
