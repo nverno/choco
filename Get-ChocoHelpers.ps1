@@ -1,6 +1,7 @@
 <# 
 .SYNOPSIS
   Get help for chocolatey helper functions.
+.PARAMETER 
 #>
 
 $parent = (Split-Path -Parent $MyInvocation.MyCommand.Definition)
