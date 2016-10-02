@@ -1,0 +1,103 @@
+
+c:/home/.emacs.d/site-lisp/choco-emacs/.git/config,30
+	repositoryformatversion 2,7
+
+c:/home/.emacs.d/site-lisp/choco-emacs/.git/description,24
+Unnamed repository;1,0
+
+c:/home/.emacs.d/site-lisp/choco-emacs/.git/hooks/applypatch-msg.sample,18
+commitmsg=13,367
+
+c:/home/.emacs.d/site-lisp/choco-emacs/.git/hooks/pre-applypatch.sample,18
+precommit=12,313
+
+c:/home/.emacs.d/site-lisp/choco-emacs/.git/hooks/pre-push.sample,15
+remote=22,770
+
+c:/home/.emacs.d/site-lisp/choco-emacs/.git/hooks/pre-rebase.sample,16
+publish=18,587
+
+c:/home/.emacs.d/site-lisp/choco-emacs/.git/hooks/prepare-commit-msg.sample,16
+  merge,24,859
+
+c:/home/.emacs.d/site-lisp/choco-emacs/.git/hooks/update.sample,78
+refname=28,929
+allowunannotated=46,1315
+zero=63,1896
+	newrev_type=65,1977
+
+c:/home/.emacs.d/site-lisp/choco-emacs/.git/logs/HEAD,143
+0000000000000000000000000000000000000000 7688ad8044bf11fb3e0e0f1340254b07f121d00e nverno <noah.v.peart@gmail.com> 1475287388 -0400	commit 1,0
+
+c:/home/.emacs.d/site-lisp/choco-emacs/.git/logs/refs/heads/master,143
+0000000000000000000000000000000000000000 7688ad8044bf11fb3e0e0f1340254b07f121d00e nverno <noah.v.peart@gmail.com> 1475287388 -0400	commit 1,0
+
+c:/home/.emacs.d/site-lisp/choco-emacs/.git/objects/2d/a14c453bfa36b8ff2f9ac628d39b27e4ac2878,37
+x+)JMU04≤`040031QJMU04≤`0400311,0
+
+c:/home/.emacs.d/site-lisp/choco-emacs/.git/objects/71/3c701eac3baaa9596fc9a6bd86b3456438a948,131
+x•ê1x•ê1,0
+Ü†8g,g2,31
+Ü†8g,ê%«ñ&ıØŒ©:WÉ8∫WÉ82,31
+Ü†8g,ê%«ñ&ıØŒ©:WÉ8∫˜æwm¯∞\ﬁ=Õ¢ÙÛÌ}ó&) æí√ítçÖm0/mnµtmnµ2,31
+
+c:/home/.emacs.d/site-lisp/choco-emacs/.git/objects/78/ce630761c7ed14fc501f6fe27f7415b0da9ed8,37
+x+)JMU04≤`040031QJMU04≤`0400311,0
+
+c:/home/.emacs.d/site-lisp/choco-emacs/.git/objects/d2/570c5fe7df9f90431857517177256110461b34,67
+∂(¨áö˛«]‹È„©R≈π©ˇbÛC∫ûAÂ}„f„ÒIf„Ò2,103
+ÏË7!\H¬3U¶U3,339
+
+c:/home/.emacs.d/site-lisp/choco-emacs/choco-emacs.el,98
+(defvar choco-source-repo 35,1162
+(defvar choco-directory 36,1228
+(defun choco-helpers 41,1395
+
+c:/home/.emacs.d/site-lisp/choco-emacs/choco-emacs.elc,140
+;ELCELC1,0
+;;; Compiled2,9
+;;; This file uses dynamic docstrings,6,79
+;;; This file does not contain utf-8 non-ASCII characters,8,147
+
+c:/home/.emacs.d/site-lisp/choco-emacs/Get-ChocoHelpers.ps1,25
+function Get-Get10,169
+
+c:/home/.emacs.d/site-lisp/choco-emacs/.gitignore,0
+
+c:/home/.emacs.d/site-lisp/choco-emacs/.git/refs/remotes/origin/master,0
+
+c:/home/.emacs.d/site-lisp/choco-emacs/.git/refs/heads/master,0
+
+c:/home/.emacs.d/site-lisp/choco-emacs/.git/ORIG_HEAD,0
+
+c:/home/.emacs.d/site-lisp/choco-emacs/.git/objects/a7/8c4a851b4c5b15a0f58c7d4d4434fd4e3241e5,0
+
+c:/home/.emacs.d/site-lisp/choco-emacs/.git/objects/9c/c3a2102bc0348c6351cdff0d27a40cef78fb18,0
+
+c:/home/.emacs.d/site-lisp/choco-emacs/.git/objects/84/c3079f9d15f676fe4a8e293eafdb55a1f3d19b,0
+
+c:/home/.emacs.d/site-lisp/choco-emacs/.git/objects/76/88ad8044bf11fb3e0e0f1340254b07f121d00e,0
+
+c:/home/.emacs.d/site-lisp/choco-emacs/.git/objects/70/23f840ba122a56909663d3157eaeef0d001a58,0
+
+c:/home/.emacs.d/site-lisp/choco-emacs/.git/objects/6b/7d3af1366e11ebd8afa317c0f585d8ef266e1c,0
+
+c:/home/.emacs.d/site-lisp/choco-emacs/.git/objects/37/92e8a5566f33951e04c3fa4a7cf01d70684d5a,0
+
+c:/home/.emacs.d/site-lisp/choco-emacs/.git/logs/refs/remotes/origin/master,0
+
+c:/home/.emacs.d/site-lisp/choco-emacs/.git/info/exclude,0
+
+c:/home/.emacs.d/site-lisp/choco-emacs/.git/index,0
+
+c:/home/.emacs.d/site-lisp/choco-emacs/.git/hooks/pre-commit.sample,0
+
+c:/home/.emacs.d/site-lisp/choco-emacs/.git/hooks/post-update.sample,0
+
+c:/home/.emacs.d/site-lisp/choco-emacs/.git/hooks/commit-msg.sample,0
+
+c:/home/.emacs.d/site-lisp/choco-emacs/.git/HEAD,0
+
+c:/home/.emacs.d/site-lisp/choco-emacs/.git/FETCH_HEAD,0
+
+c:/home/.emacs.d/site-lisp/choco-emacs/.git/COMMIT_EDITMSG,0

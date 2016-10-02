@@ -5,7 +5,7 @@
 #>
 
 $parent = (Split-Path -Parent $MyInvocation.MyCommand.Definition)
-Write-Host $parent
+# Write-Host $parent
 
 function Get-ChocoHelpers ($outfile) {
     $parent = (Split-Path -Parent $MyInvocation.MyCommand.Definition)
@@ -18,4 +18,14 @@ function Get-ChocoHelpers ($outfile) {
     Get-ChildItem $path |  %{ . "$path\$_" }
 }
 
+function prompt {
+    ([string]$(pwd)).Replace("$env:HOME", "~") + "`nPS > "
+}
 
+function Get-HelpTopics () {
+    Get-Help about_* | %{$_.Name.substring(6)}
+}
+
+function Get-HelpOn($topic) {
+
+}
