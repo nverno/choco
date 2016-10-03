@@ -30,10 +30,19 @@
 ;;; Code:
 
 (eval-when-compile
+  (require 'subr-x)
   (require 'cl-lib))
+(require 'etags)
 
 (defvar choco-source-repo "https://github.com/chocolatey/choco")
 (defvar choco-directory (getenv "chocolateyInstall"))
+
+(defvar powershell--xref-identifier-completion-table
+  (apply-partially #'completion-table-with-predicate
+                   powershell-eldoc-obarray
+                   (lambda (sym)
+                     (intern-soft sym powershell-eldoc-obarray))
+                   'strict))
 
 ;; ------------------------------------------------------------
 ;;* Load available helpers, get help docs
@@ -43,5 +52,9 @@
                   (expand-file-name "helpers/functions" choco-directory) t "^[^.]")))
     ()))
 
+(defvar choco-emacs-objects (make-hash-table :test 'equal))
+
+
 (provide 'choco-emacs)
+
 ;;; choco-emacs.el ends here

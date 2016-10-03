@@ -1,31 +1,24 @@
 <# 
 .SYNOPSIS
-  Get help for chocolatey helper functions.
-.PARAMETER 
+Get help for chocolatey helper functions.
+.PARAMETER outfile
+Name of output file.
 #>
 
-$parent = (Split-Path -Parent $MyInvocation.MyCommand.Definition)
-# Write-Host $parent
+# $parent = (Split-Path $SCRIPT:MyInvocation.MyCommand.Path -parent)
 
 function Get-ChocoHelpers ($outfile) {
-    $parent = (Split-Path -Parent $MyInvocation.MyCommand.Definition)
-    
-        if ($outfile -eq $null) {
-            $outfile = Join-Path 
-        }
-    
+    if ($outfile -eq $null) {
+        $outfile = Join-Path $parent helpers.el
+    }
+
     $path = "$env:chocolateyInstall\helpers\functions"
-    Get-ChildItem $path |  %{ . "$path\$_" }
-}
-
-function prompt {
-    ([string]$(pwd)).Replace("$env:HOME", "~") + "`nPS > "
-}
-
-function Get-HelpTopics () {
-    Get-Help about_* | %{$_.Name.substring(6)}
-}
-
-function Get-HelpOn($topic) {
-
+    foreach ($s in $(Get-ChildItem $path)) {
+        . "$path\$s"
+        Get-Help $s.BaseName
+        # .$path\$s
+        # Get-Help $path\$s
+        # Get-Help "$path\$s"
+    }
+    # Get-ChildItem $path |  %{ . "$path\$_" }
 }
