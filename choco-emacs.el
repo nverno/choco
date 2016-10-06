@@ -70,7 +70,21 @@
 ;;   (let* ((proc (inf-powershell-shell-process t)))))
 
 ;; ------------------------------------------------------------
-;;* Interactive functions / minor-mode
+;;* help
+;; ess-R-object-completion
+
+;; (defun ess-julia-input-sender (proc string)
+;;   (save-current-buffer
+;;     (let* ((help-?-regexp "^ *\\(?:\\(?1: *?\\? *\\)\\(?2:.+\\)\\)")
+;;            (help-?-match (string-match help-?-regexp string)))
+;;       (cond (help-?-match
+;;              (ess-display-help-on-object (match-string 2 string))
+;;              (process-send-string proc "\n"))
+;;             (t ;; normal command
+;;              (inferior-ess-input-sender proc string))))))
+
+;; ------------------------------------------------------------
+;;* Functions
 
 (defun choco-dired ()
   (interactive)
@@ -102,6 +116,9 @@
       (xref-find-definitions
        (ido-completing-read "Tag: " (tags-completion-table)))
     (error (tags-reset-tags-tables))))
+
+;; ------------------------------------------------------------
+;;* minor mode
 
 (defvar choco-minor-mode-menu
   '("Choco"
