@@ -25,38 +25,36 @@
 
 ;;; Commentary:
 
+;; [![Build Status](https://travis-ci.org/nverno/choco-emacs.svg?branch=master)](https://travis-ci.org/nverno/choco-emacs)
+
 ;; choco/src/chocolatey.resources/helpers/functions
 
 ;;; Code:
 
 (eval-when-compile
   (require 'subr-x)
-  (require 'cl-lib))
-(require 'powershell)
+  (require 'cl-lib)
+  (defvar company-backends))
+(require 'powershell nil t)
 (require 'tag-utils)
 (require 'etags)
 
+(defvar choco-emacs--dir nil)
+(when load-file-name
+  (setq choco-emacs--dir (file-name-directory load-file-name)))
+
 (defvar choco-source-repo "https://github.com/chocolatey/choco")
 (defvar chocolatey-dir (expand-file-name "helpers" (getenv "chocolateyInstall")))
-(defvar choco-pkg-dir nil)
-(defvar choco-script "choco.psm1")
-(defvar powershell-helper-script "build/helpers.psm1")
 
 ;; ------------------------------------------------------------
 
-(when load-file-name
-  (setq choco-pkg-dir (expand-file-name (file-name-directory load-file-name)))
-  (setq choco-script (expand-file-name choco-script choco-pkg-dir))
-  (setq powershell-helper-script
-        (expand-file-name powershell-helper-script
-                          (file-name-directory (locate-library "powershell")))))
-
-(defvar powershell--xref-identifier-completion-table
-  (apply-partially #'completion-table-with-predicate
-                   posh-functions
-                   (lambda (sym)
-                     (intern-soft sym posh-functions))
-                   'strict))
+(when (featurep 'powershell)
+  (defvar powershell--xref-identifier-completion-table
+    (apply-partially #'completion-table-with-predicate
+                     posh-functions
+                     (lambda (sym)
+                       (intern-soft sym posh-functions))
+                     'strict)))
 
 ;; ------------------------------------------------------------
 ;;* Setup
@@ -97,7 +95,7 @@
   (tag-utils-tag-dir chocolatey-dir
                      :program "ctags"
                      :absolute-path t
-                     :ofile (expand-file-name "TAGS" choco-pkg-dir)))
+                     :ofile (expand-file-name "TAGS" choco-emacs--dir)))
 
 ;; determine file of tag, relative to `chocolatey-dir'
 ;; (defun choco-file-of-tag (&optional _ignored)
@@ -110,7 +108,7 @@
 (defun choco-find-tag ()
   "Find tag with ido-completion.  Tag `chocolatey-dir' if no TAGS file exists."
   (interactive)
-  (unless (file-exists-p (expand-file-name "TAGS" choco-pkg-dir))
+  (unless (file-exists-p (expand-file-name "TAGS" choco-emacs--dir))
     (choco-tag))
   (condition-case nil
       (xref-find-definitions
@@ -140,7 +138,7 @@
 company backends so autocompletion works for helper functions."
   nil
   :lighter "Choco"
-  (unless (file-exists-p (expand-file-name "TAGS" choco-pkg-dir))
+  (unless (file-exists-p (expand-file-name "TAGS" choco-emacs--dir))
     (choco-tag))
   (add-to-list 'company-etags-modes 'powershell-mode)
   (setq-local company-backends '((company-capf
@@ -148,6 +146,8 @@ company backends so autocompletion works for helper functions."
                                   company-dabbrev-code)
                                  company-files
                                  company-dabbrev)))
+
+;; ------------------------------------------------------------
 
 (provide 'choco-emacs)
 

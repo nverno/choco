@@ -1,8 +1,8 @@
 <# 
 .SYNOPSIS
-Get help for chocolatey helper functions.
+  Get help for chocolatey helper functions.
 .PARAMETER helpers
-Powershell helper script.
+  Powershell helper script.
 #>
 
 # $parent = (Split-Path $SCRIPT:MyInvocation.MyCommand.Path -parent)
