@@ -1,4 +1,4 @@
-(require 'choco-emacs)
+(require 'choco)
 (require 'ert)
 
 (defmacro choco--should- (from to)
