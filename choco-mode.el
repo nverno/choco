@@ -1,4 +1,4 @@
-;;; choco-tag --- some helpers to tag choco
+;;; choco-mode --- some helpers for choco
 
 ;; Author: Noah Peart <noah.v.peart@gmail.com>
 ;; URL: https://github.com/nverno/choco
@@ -37,6 +37,8 @@
   ;;               (buffer-substring (match-beginning 1) (match-end 1)))))
   ;;     (expand-file-name str (file-truename chocolatey-dir)))))
 
+;;; Tags
+
 ;;;###autoload
 (defun choco-tag-ido ()
   "Find tag with ido-completion.  Tag `chocolatey-dir' if no TAGS file exists."
@@ -57,5 +59,63 @@
                      :absolute-path t
                      :ofile (expand-file-name "TAGS" choco--dir)))
 
-(provide 'choco-tag)
-;;; choco-tag.el ends here
+;;; Chocolatey objects
+
+(defvar choco-objects (make-hash-table :test 'equal))
+
+;; load helpers, scripts from chocolatey directory
+;; (defun choco-load ()
+;;   (unless (file-exists-p powershell-helper-script)
+;;     (user-error "Unable to find powershell helper script: %s" powershell-helper-script))
+;;   (let* ((proc (inf-powershell-shell-process t)))))
+
+(when (featurep 'powershell)
+  (defvar powershell--xref-identifier-completion-table
+    (apply-partially #'completion-table-with-predicate
+                     posh-functions
+                     (lambda (sym)
+                       (intern-soft sym posh-functions))
+                     'strict)))
+
+;;; Helpers
+
+(defun choco-dired ()
+  (interactive)
+  (dired-other-window chocolatey-dir))
+
+;;; Minor mode
+
+(defvar choco-minor-mode-menu
+  '("Choco"
+    ["Dired" choco-dired t]
+    ("Tags"
+     ["Make Tags" choco-tag t]
+     ["Find Tag" choco-tag-ido t])))
+
+(defvar choco-minor-mode-map
+  (let ((km (make-sparse-keymap)))
+    (easy-menu-define nil km nil choco-minor-mode-menu)
+    (define-key km (kbd "<f2> m f") #'choco-tag-ido)
+    (define-key km (kbd "<f2> m d") #'choco-dired)
+    (define-key km (kbd "<f2> m t") #'choco-tag)
+    km))
+
+;;;###autoload
+(define-minor-mode choco-minor-mode
+  "Chocolatey minor mode. Tags chocolatey directory when enabled and sets
+company backends so autocompletion works for helper functions."
+  nil
+  :lighter "Choco"
+  (when (featurep 'tag-utils)
+    (unless (file-exists-p (expand-file-name "TAGS" choco--dir))
+      (choco-tag)))
+  (when (featurep 'company)
+    (add-to-list 'company-etags-modes 'powershell-mode)
+    (setq-local company-backends '((company-capf
+                                    company-etags
+                                    company-dabbrev-code)
+                                   company-files
+                                   company-dabbrev))))
+
+(provide 'choco-mode)
+;;; choco-mode.el ends here

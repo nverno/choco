@@ -230,19 +230,43 @@ Commands:\n
 
 ;; default action to list choco packages as tabulated list
 (defun choco-list--default-action (query)
-  (with-output-to-choco-list query [("name" 30 t) ("version" 20 nil)]
+  (with-output-to-choco-list query [("name" 25 t)
+                                    ("version" 15 nil)
+                                    ("status" 10 nil)
+                                    ("notes" 30 nil)]
+    ;; skip first two lines: command, chocolatey version
+    (forward-line 2)
     (let (choco-pkgs)
-      (while (re-search-forward
-              ;; collect lines like "package.name" "version"
-              "^\\([^ \t\n]+\\)\\s-*\\([a-zA-Z.0-9]+\\)\\s-*$" nil t)
+      (while (and (not (looking-at-p "^$\\|^[0-9]"))
+                  (re-search-forward
+                   ;; collect lines like "package.name" "version"
+                   (eval-when-compile
+                     (concat
+                      ;; name, version
+                      "^\\([^ \t\n]+\\)[ \t]+\\([a-zA-Z.0-9]+\\)[ \t]*"
+                      ;; optional: status, notes
+                      "\\(?:\\[\\([^\]]+\\)\\]\\)?[ \t]*\\(.*\\)?$"))
+                   (line-end-position) t))
         (let ((name (match-string-no-properties 1))
-              (version (match-string-no-properties 2)))
+              (version (match-string-no-properties 2))
+              (status (match-string-no-properties 3))
+              (notes (match-string-no-properties 4)))
           (push (list name
                       (vector
-                       (propertize name 'face 'font-lock-function-name-face)
-                       (propertize version 'face 'font-lock-string-face)))
+                       (propertize name 'face
+                                   'font-lock-function-name-face)
+                       (propertize version 'face
+                                   'font-lock-string-face)
+                       (if status
+                           (propertize status 'face
+                                       'font-lock-warning-face)
+                         "")
+                       (if notes
+                           (propertize notes 'face 'font-lock-comment-face)
+                         "")))
                 choco-pkgs)))
-      choco-pkgs)))
+      ;; drop final line: how many packages installed
+      (cdr choco-pkgs))))
 
 ;; format default output for 'choco outdated' (lists outdated packages)
 (defun choco-outdated--default-action (query)
@@ -277,7 +301,7 @@ Commands:\n
                        (default-args . "")))))
 
 ;;;###autoload
-(defun choco-list (command &optional default-args action callback limit interactive)
+(defun choco-list (command &optional action callback limit _interactive)
   "Call 'choco' with optional CALLBACK function to process the output.
 With a prefix argument, set time limit for async timer."
   (interactive
@@ -291,7 +315,7 @@ With a prefix argument, set time limit for async timer."
           (limit (if current-prefix-arg
                     (read-number "Time limit: " choco-process-max-tries)
                   choco-process-max-tries)))
-     (list (concat "choco " command " " args) nil action nil limit t)))
+     (list (concat "choco " command " " args) action nil limit t)))
   (when limit
     (setq choco-process-max-tries limit))
   (if callback
@@ -336,67 +360,6 @@ the tabulated list to use as entry."
         (format " -Command \"choco %s %s\";" cmd name)
         "Write-Host \"`n`nHit return to exit\";"
         "$x = $host.UI.RawUI.Readkey('NoEcho,IncludeKeyDown')")))))
-
-;; ------------------------------------------------------------
-;;; Dev
-
-(defun choco-dired ()
-  (interactive)
-  (dired-other-window chocolatey-dir))
-
-;;; Chocolatey objects
-
-(defvar choco-objects (make-hash-table :test 'equal))
-
-;; load helpers, scripts from chocolatey directory
-;; (defun choco-load ()
-;;   (unless (file-exists-p powershell-helper-script)
-;;     (user-error "Unable to find powershell helper script: %s" powershell-helper-script))
-;;   (let* ((proc (inf-powershell-shell-process t)))))
-
-(when (featurep 'powershell)
-  (defvar powershell--xref-identifier-completion-table
-    (apply-partially #'completion-table-with-predicate
-                     posh-functions
-                     (lambda (sym)
-                       (intern-soft sym posh-functions))
-                     'strict)))
-
-;;; Minor mode
-
-(defvar choco-minor-mode-menu
-  '("Choco"
-    ["Dired" choco-dired t]
-    ("Tags"
-     ["Make Tags" choco-tag t]
-     ["Find Tag" choco-tag-ido t])))
-
-(defvar choco-minor-mode-map
-  (let ((km (make-sparse-keymap)))
-    (easy-menu-define nil km nil choco-minor-mode-menu)
-    (define-key km (kbd "<f2> m f") #'choco-tag-ido)
-    (define-key km (kbd "<f2> m d") #'choco-dired)
-    (define-key km (kbd "<f2> m t") #'choco-tag)
-    km))
-
-;;;###autoload
-(define-minor-mode choco-minor-mode
-  "Chocolatey minor mode. Tags chocolatey directory when enabled and sets
-company backends so autocompletion works for helper functions."
-  nil
-  :lighter "Choco"
-  (when (featurep 'tag-utils)
-    (unless (file-exists-p (expand-file-name "TAGS" choco--dir))
-      (choco-tag)))
-  (when (featurep 'company)
-    (add-to-list 'company-etags-modes 'powershell-mode)
-    (setq-local company-backends '((company-capf
-                                    company-etags
-                                    company-dabbrev-code)
-                                   company-files
-                                   company-dabbrev))))
-
-;; ------------------------------------------------------------
 
 (provide 'choco)
 
