@@ -68,6 +68,9 @@
 ;; internal variable to track number of process pollings
 (defvar choco-process--attempt)
 
+;; store last command to easily revert tabulated list
+(defvar-local choco-last-command nil)
+
 (defalias 'choco-completing-read choco-completing-read)
 
 ;; ------------------------------------------------------------
@@ -360,6 +363,9 @@ the tabulated list to use as entry."
         (format " -Command \"choco %s %s\";" cmd name)
         "Write-Host \"`n`nHit return to exit\";"
         "$x = $host.UI.RawUI.Readkey('NoEcho,IncludeKeyDown')")))))
+
+;; -------------------------------------------------------------------
+(declare-function w32-shell-execute "w32")
 
 (provide 'choco)
 
