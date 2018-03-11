@@ -25,6 +25,8 @@
 
 ;;; Commentary:
 ;;; Code:
+(eval-when-compile
+  (defvar company-etags-modes))
 (require 'choco)
 (require 'tag-utils)
 (require 'etags)
